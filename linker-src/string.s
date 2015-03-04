@@ -28,7 +28,19 @@ tab:	.asciiz "\t"
 #------------------------------------------------------------------------------
 strlen:
 	# YOUR CODE HERE
-	jr $ra
+	addi $t0, $t0, 1 #initialize count to start with 1 for first character
+ 
+       Loop:
+	  	lb $t1, 0($a0) #load the next character to t0
+	   	addi $a0, $a0, 1 #load increment string pointer
+    		addi $t0, $t0, 1 #increment count
+		beqz $t1, exit1 #end loop if null character is reached
+    		j Loop 
+    
+    	exit: 	addiu $v0,$t0,0
+    		jr $ra
+    
+
 
 #------------------------------------------------------------------------------
 # function strncpy()

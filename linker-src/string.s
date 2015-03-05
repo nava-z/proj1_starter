@@ -28,7 +28,16 @@ tab:	.asciiz "\t"
 #------------------------------------------------------------------------------
 strlen:
 	# YOUR CODE HERE
-	jr $ra
+	addi $t0, $t0, 1 #counter
+	Loop1:
+	  	lb $t1, 0($a0) #load the next character to t0
+	   	addi $a0, $a0, 1 #load increment string pointer
+    		addi $t0, $t0, 1 #increment count
+		beq $t1, $0, end1 #end loop if null character is reached
+    		j Loop1 
+	end1: 	
+    		addiu $v0,$t0,0
+    		jr $ra
 
 #------------------------------------------------------------------------------
 # function strncpy()
@@ -42,7 +51,18 @@ strlen:
 #------------------------------------------------------------------------------
 strncpy:
 	# YOUR CODE HERE
-	jr $ra
+
+	Loop2: 
+
+		lbu $t0, 0($a1) #load a byte from source string
+	    	beq $a2, $0, end2 #if number are characters are copied
+	    	sb $t0, 0($a0) #store byte in destination string
+	    	addi $a0, $a0, 1 #increment both addresses
+	    	addi $a1, $a1, 1
+	    	j 	Loop2
+	end2:
+		addiu $v0,$a0,0
+    		jr $ra
 
 #------------------------------------------------------------------------------
 # function copy_of_str()
@@ -58,6 +78,15 @@ strncpy:
 #------------------------------------------------------------------------------
 copy_of_str:
 	# YOUR CODE HERE
+
+	#alloccate memory
+	addiu $s1, $s0, 0
+	jal strlen
+	addiu $t0, $v0, 0 # put length of string in t0
+	addiu $a2, $t0, 0 # put length in second argument 
+	addiu $a1, $a0, 0 # put first argument in second argument
+	addiu $a2, $s0, 0 # put new destination in a2 
+	jal   strncpy
 	jr $ra
 
 ###############################################################################
